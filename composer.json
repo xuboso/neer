@@ -1,0 +1,17 @@
+{
+    "name": "xubo/neer",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bude",
+            "email": "xubobox@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Neer\\": "src/"
+        }
+    },
+    "require": {}
+}
