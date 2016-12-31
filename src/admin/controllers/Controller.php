@@ -6,6 +6,6 @@ class Controller
 {
     public function index()
     {
-        echo "HomePage";
+        echo "Admin HomePage";
     }
 }
