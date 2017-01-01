@@ -1,6 +1,6 @@
 <?php
 
-namespace Neer\Web\Controllers;
+namespace Neer\Admin\Controllers;
 
 class Controller
 {
