@@ -1,5 +1,7 @@
 {
-    "name": "xubo/neer",
+    "name": "neer/framework",
+    "description": "The PHP Neer Framework",
+    "keywords": ["framework", "neer"],
     "type": "project",
     "license": "MIT",
     "authors": [
