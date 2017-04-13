@@ -18,7 +18,13 @@ class JsonResponse implements ResponseInterface
 
     public function send()
     {
+        ob_start();
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode($this->content);
+    }
+
+    public function terminate()
+    {
+        ob_end_flush();
     }
 }

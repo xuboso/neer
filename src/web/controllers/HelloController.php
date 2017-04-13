@@ -10,7 +10,8 @@ class HelloController
     public function indexAction()
     {
         return new JsonResponse(['name' => 'jack']);
-        return new Response("<h1>Hello</h1>");
+        $response = (new Response("<h1>Hello</h1>"))->withCookie("server", true, 60)->expires(60);
+        return $response;
     }
 
     public function homeAction()
