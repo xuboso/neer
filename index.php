@@ -1,7 +1,12 @@
 <?php
+
 require 'vendor/autoload.php';
 
-use Neer\Web\Controllers\Controller;
+//var_dump(class_exists(\Neer\Web\Controllers\HelloController::class)); exit;
 
-$controller = new Controller;
-$controller->index();
+$app = new Neer\App();
+
+$request = $app->capture();
+$response = $app->handle($app->capture());
+
+$response->send();
