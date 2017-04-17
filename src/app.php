@@ -8,8 +8,6 @@ use Neer\Foundation\Http\Route;
 
 class App
 {
-    private static $request = array();
-
     // 处理请求数据
     public function capture()
     {
@@ -22,6 +20,7 @@ class App
     {
         $route_url = $request->getUrl();
         $method = $request->getMethod();
+
 
         try {
             $response = $this->dispatch($method, $route_url);

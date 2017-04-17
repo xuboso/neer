@@ -28,6 +28,8 @@ class Route
 
     public static function resolve($method, $url)
     {
+        static::getUrlParameters($method, $url);
+        var_dump(self::$routes[$method]); exit;
         $namespace_path = "\\Neer\\Web\\Controllers\\";
         if (!isset(self::$routes[$method][$url])) {
             throw new \Exception("路由不存在", 404);
@@ -50,10 +52,27 @@ class Route
 
         $action = $map_arr[1]."Action";
         if (!is_callable([$controller, $action])) {
-            return new \Exception($action."不可调用", 800);
+            throw new \Exception($action."不可调用", 800);
         }
 
         return $controller->$action();
 
+    }
+
+    private static function getUrlParameters($method, $url)
+    {
+        $matched = false;
+        $routes = self::$routes[$method];
+        foreach ($routes as $pattern => $route) {
+            if (preg_match_all('/{(.*?)}/', $pattern, $matches)) {
+                $matched = true;
+            }
+        }
+
+        if (!$matched) {
+            throw new \Exception("路由不存在".$url, 404);
+        }
+
+        var_dump($matches, $routes, $url); exit;
     }
 }
