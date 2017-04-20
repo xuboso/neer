@@ -28,16 +28,11 @@ class Route
 
     public static function resolve($method, $url)
     {
-        static::getUrlParameters($method, $url);
-        var_dump(self::$routes[$method]); exit;
-        $namespace_path = "\\Neer\\Web\\Controllers\\";
-        if (!isset(self::$routes[$method][$url])) {
-            throw new \Exception("路由不存在", 404);
-        }
-
-        $map = self::$routes[$method][$url];
+        $route_info = static::getUrlParameters($method, $url);
+        $map = $route_info['map'];
         $map_arr = explode('@', $map);
 
+        $namespace_path = "\\Neer\\Web\\Controllers\\";
         if (!class_exists($namespace_path.$map_arr[0], true)) {
             throw new \Exception($map_arr[0]."不存在", 404);
         }
@@ -55,7 +50,10 @@ class Route
             throw new \Exception($action."不可调用", 800);
         }
 
-        return $controller->$action();
+//        var_dump($route_info['parameters']); exit;
+        extract($route_info['parameters']);
+
+        return $controller->$action($name);
 
     }
 
@@ -63,9 +61,18 @@ class Route
     {
         $matched = false;
         $routes = self::$routes[$method];
+        $route_info = [];
         foreach ($routes as $pattern => $route) {
-            if (preg_match_all('/{(.*?)}/', $pattern, $matches)) {
+            $pattern_constant = explode('/', $pattern);
+            if (preg_match("~^[/]?(?|$pattern_constant[1]/([^/]+))$~", $url, $matches)) {
                 $matched = true;
+                $params = $pattern_constant[2];
+                $params = substr($params, 1, strlen($params) - 2);
+                $temp[$params] = $matches[1];
+                $route_info['parameters'][$params] = $matches[1];
+                $route_info['map'] = self::$routes[$method][$pattern];
+                extract($temp);
+                break;
             }
         }
 
@@ -73,6 +80,6 @@ class Route
             throw new \Exception("路由不存在".$url, 404);
         }
 
-        var_dump($matches, $routes, $url); exit;
+        return $route_info;
     }
 }
